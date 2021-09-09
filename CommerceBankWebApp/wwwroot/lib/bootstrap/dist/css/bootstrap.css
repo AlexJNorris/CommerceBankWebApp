@@ -69,7 +69,9 @@ body {
 
 hr {
   box-sizing: content-box;
-  height: 0;
+  height: 10px;
+  border-width: 10px;
+  color: black;
   overflow: visible;
 }
 

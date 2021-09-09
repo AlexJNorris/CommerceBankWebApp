@@ -12,8 +12,17 @@ a {
   color: #0366d6;
 }
 p {
-    margin-top: 50px;
+    margin-top: 30px;
     line-height: 1.5rem;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 3px;
+    width: 75%;
+    border-width: 2px;
+    color: black;
+    overflow: visible;
 }
 
 .left-block {
@@ -90,7 +99,7 @@ body {
     background-color: #006747;
     padding: 15px;
     margin: 25px;
-    color: white;
+    color: lightblue;
 }
 .middle-block {
     float: left;
@@ -124,7 +133,7 @@ body {
 .btn-primary, .btn1small {
     color: #006747 !important;
     background-color: white;
-    border: 2px solid white;
+    border: 2px solid lightblue;
     border-color: transparent;
 }
 
