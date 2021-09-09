@@ -12,6 +12,16 @@ a {
   color: #0366d6;
 }
 
+.left-block {
+    float: left;
+    width: 300px;
+    height: 500px;
+    background-color: #006747;
+    padding: 15px;
+    margin: 20px;
+    color: white;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -68,4 +78,31 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+.left-block {
+    float: left;
+    width: 300px;
+    height: 500px;
+    background-color: #006747;
+    padding: 15px;
+    margin: 25px;
+    color: white;
+}
+.middle-block {
+    float: left;
+    width: 300px;
+    height: 500px;
+    background-color: yellow;
+    padding: 15px;
+    margin: 25px;
+    color: black;
+}
+.right-block {
+    float: left;
+    width: 300px;
+    height: 500px;
+    background-color: lightblue;
+    padding: 15px;
+    margin: 25px;
+    color: black;
 }
