@@ -73,7 +73,7 @@ namespace CommerceBankWebApp.Pages
                 {
                     accountType = reader["Account Type"].ToString();
                 }
-                catch (System.IndexOutOfRangeException e)
+                catch (System.IndexOutOfRangeException)
                 {
                     // if we werent able to read the account type assume checking
                     accountType = "Checking";
@@ -110,6 +110,11 @@ namespace CommerceBankWebApp.Pages
                 }
 
             }
+
+            reader.Close();
+
+            objConn.Close();
+            objConn.Dispose();
 
             return transactionList;
         }
