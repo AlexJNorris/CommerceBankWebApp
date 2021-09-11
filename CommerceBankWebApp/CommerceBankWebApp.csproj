@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7" />
-    <PackageReference Include="System.Data.OleDb" Version="5.0.0" />
+    <PackageReference Include="SpreadsheetLight" Version="3.5.0" />
   </ItemGroup>
 
 </Project>

@@ -22,7 +22,7 @@ namespace CommerceBankWebApp.Models
 
         [Column("AccountNumber")]
         [Required]
-        public int AccountNumber { get; set; }
+        public long AccountNumber { get; set; }
         [Column("ProcesingDate")]
         [Required]
         public DateTime ProcessingDate { get; set; }
@@ -43,7 +43,7 @@ namespace CommerceBankWebApp.Models
         {
         }
 
-        public Transaction(string accountType, int accountNumber, DateTime processingDate, double balance, bool isCredit, double amount, string description)
+        public Transaction(string accountType, long accountNumber, DateTime processingDate, double balance, bool isCredit, double amount, string description)
         {
             AccountType = accountType;
             AccountNumber = accountNumber;

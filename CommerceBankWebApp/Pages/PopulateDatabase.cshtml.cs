@@ -7,9 +7,8 @@ using CommerceBankWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using System.Data.OleDb;
-using System.Data;
 using Microsoft.Extensions.Logging;
+using SpreadsheetLight;
 
 namespace CommerceBankWebApp.Pages
 {
@@ -28,10 +27,10 @@ namespace CommerceBankWebApp.Pages
             _context = context;
 
             // if there are no transactions in the database yet we will read the excel file and add the data
-            if (!_context.Transactions.Any())
+            if (!context.Transactions.Any())
             {
                 // add all transactions in the excel file to the database
-                foreach (Transaction transaction in ReadExcelData())
+                foreach (Transaction transaction in ReadExcelData("transaction_data.xlsx", "Cust A").Union(ReadExcelData("transaction_data.xlsx", "Cust B")))
                 {
                     _context.Add(transaction);
                 }
@@ -46,75 +45,65 @@ namespace CommerceBankWebApp.Pages
         }
 
         // returns a list of all transactions in the excel file
-        public List<Transaction> ReadExcelData() {
+        public List<Transaction> ReadExcelData(string fileName, string sheetName) {
             List<Transaction> transactionList = new List<Transaction>();
 
-            // connection settings to load transaction_data.xlsx in the root directory of the project
-            String sConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + "transaction_data.xlsx" + ";" + "Extended Properties=Excel 8.0";
+            SLDocument document = new SLDocument(fileName, sheetName);
 
-            OleDbConnection objConn = new OleDbConnection(sConnectionString);
-            objConn.Open();
+            SLWorksheetStatistics stats = document.GetWorksheetStatistics();
 
-            /* command selects the first sheet in the excel file. Currently we are only reading the first sheet
-            this can be changed */
-
-            OleDbCommand objCmdSelect = new OleDbCommand("SELECT * FROM ['Cust A$']", objConn);
-
-            // run the command
-            OleDbDataReader reader = objCmdSelect.ExecuteReader();
-
-            // read each row
-            while (reader.Read())
+            for (short i = 2;i <= stats.EndRowIndex;i++)
             {
-                string accountType;
+                string accountType = "Checking";
+                long? accountNumber = null;
+                DateTime? processingDate = null;
+                double? balance = null;
+                bool? isCredit = null;
+                double? amount = null;
+                string description = null;
 
-                // try to read the account type entry in the sheet. The sheet for Cust A contains this entry, Cust B does not
-                try
+                for (short j = 1;j <= 7;j++)
                 {
-                    accountType = reader["Account Type"].ToString();
+                    if (!document.HasCellValue(i, j)) continue;
+
+                    switch (document.GetCellValueAsString(1, j))
+                    {
+                        case "Account Type":
+                            accountType = document.GetCellValueAsString(i, j);
+                            break;
+                        case "Acct #":
+                            accountNumber = document.GetCellValueAsInt64(i, j);
+                            break;
+                        case "Processing Date":
+                            processingDate = document.GetCellValueAsDateTime(i, j);
+                            break;
+                        case "Balance":
+                            balance = document.GetCellValueAsDouble(i, j);
+                            break;
+                        case "CR (Deposit) or DR (Withdrawal":
+                        case "CR (Deposit) or DR (Withdrawal)":
+                            string cellText = document.GetCellValueAsString(i, j);
+
+                            if (cellText == "CR") isCredit = true;
+                            else isCredit = false;
+                            break;
+                        case "Amount":
+                            amount = document.GetCellValueAsDouble(i, j);
+                            break;
+                        case "Description 1":
+                            description = document.GetCellValueAsString(i, j);
+                            break;
+                    }
+
+                    if (accountNumber.HasValue && processingDate.HasValue && balance.HasValue && isCredit.HasValue && amount.HasValue && description != null)
+                    {
+                        Transaction transaction = new Transaction(accountType, accountNumber.Value, processingDate.Value,
+                            balance.Value, isCredit.Value, amount.Value, description);
+
+                        transactionList.Add(transaction);
+                    }
                 }
-                catch (System.IndexOutOfRangeException)
-                {
-                    // if we werent able to read the account type assume checking
-                    accountType = "Checking";
-                }
-
-                // try to read the data for each field
-                try
-                {
-
-                    int accountNum = Int32.Parse(reader["Acct #"].ToString());
-                    DateTime processingDate = DateTime.Parse(reader["Processing Date"].ToString());
-
-                    double balance = Double.Parse(reader["Balance"].ToString());
-
-                    string creditFlag = reader["CR (Deposit) or DR (Withdrawal)"].ToString();
-
-                    bool isCredit = false;
-                    if (creditFlag == "CR") isCredit = true;
-                    else if (creditFlag == "DR") isCredit = false;
-                    else if (creditFlag == "") continue;
-
-                    double amount = Double.Parse(reader["Amount"].ToString());
-
-                    string description = reader["Description 1"].ToString();
-
-                    Transaction transaction = new Transaction(accountType, accountNum, processingDate, balance, isCredit, amount, description);
-
-                    transactionList.Add(transaction);
-
-                }
-                catch (Exception e)
-                {
-                    //TODO: Something if we couldnt read the current row as a transaction
-                }
-
             }
-
-            reader.Close();
-
-            objConn.Close();
-            objConn.Dispose();
 
             return transactionList;
         }
