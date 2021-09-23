@@ -6237,11 +6237,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Documents\\School\\Capstone\\CommerceBankWebApp\\CommerceBankWebApp.csproj",
+      "projectUniqueName": "D:\\Documents\\School\\CommerceBankWebApp\\CommerceBankWebApp\\CommerceBankWebApp.csproj",
       "projectName": "CommerceBankWebApp",
-      "projectPath": "D:\\Documents\\School\\Capstone\\CommerceBankWebApp\\CommerceBankWebApp.csproj",
+      "projectPath": "D:\\Documents\\School\\CommerceBankWebApp\\CommerceBankWebApp\\CommerceBankWebApp.csproj",
       "packagesPath": "C:\\Users\\James\\.nuget\\packages\\",
-      "outputPath": "D:\\Documents\\School\\Capstone\\CommerceBankWebApp\\obj\\",
+      "outputPath": "D:\\Documents\\School\\CommerceBankWebApp\\CommerceBankWebApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
