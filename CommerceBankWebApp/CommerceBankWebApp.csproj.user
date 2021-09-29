@@ -4,6 +4,9 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>CommerceBankWebApp</ActiveDebugProfile>
+    <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
+    <_SelectedScaffolderID>IdentityScaffolder</_SelectedScaffolderID>
+    <_SelectedScaffolderCategoryPath>root/Identity</_SelectedScaffolderCategoryPath>
+    <WebStackScaffolding_ViewDialogWidth>800</WebStackScaffolding_ViewDialogWidth>
   </PropertyGroup>
 </Project>
